@@ -1,23 +1,117 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.courses</groupId>
-    <artifactId>courses</artifactId>
-    <version>1</version>
-  </parent>
-  <groupId>com.courses</groupId>
-  <artifactId>courses-server</artifactId>
-  <version>1</version>
-  <name>courses-server</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.courses</groupId>
+		<artifactId>courses</artifactId>
+		<version>1</version>
+	</parent>
+	<groupId>com.courses</groupId>
+	<artifactId>courses-server</artifactId>
+	<!-- If the packaging is not defined a jar files will be generated.-->
+	<packaging>war</packaging>
+	<version>1</version>
+	<name>courses-server</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
+            <exclusion>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+            </exclusion>
+        </exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>	
+	<build>
+		<!-- File name to be deployed -->
+		<finalName>courses</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<!--sourceDirectory>${project.parent.basedir}/courses-server/src/main/</sourceDirectory-->
+
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<!-- https://maven.apache.org/plugins/maven-war-plugin/war-mojo.html -->
+				<!-- The WAR Plugin is responsible for collecting all artifact dependencies, classes and resources of the web application and 
+				packaging them into a web application archive.-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<!-- The directory for deploying the WAR file. -->
+					<outputDirectory>/Dev/wildfly-26.0.1.Final/standalone/deployments</outputDirectory>
+
+					<!-- The directory where the webapp is built. -->
+					<webResources>
+						<resource>
+							<directory>${project.build.directory}/public</directory>
+							<targetPath>WEB-INF/classes/static</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<!-- The resources files are copied from ${project.parent.basedir}/courses-server/src/main to 
+				target/classes (So this is the actual destination directory for your compiled code,)-->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/public</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/courses-server/src/main
+									</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- https://www.baeldung.com/maven-clean-plugin -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>target</directory>
+							<excludes>
+								<exclude>public</exclude>
+							</excludes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
 </project>
