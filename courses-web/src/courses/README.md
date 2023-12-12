@@ -25,3 +25,19 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+npm install -g npm
+npm install -g @angular/cli
+ng g --help
+
+Please update your Node.js version or visit https://nodejs.org/ for additional instructions.
+
+ng new courses
+	Yes - SCSS
+	No -  SSR and SSG
+
+Dependancies:
+ng add @angular/material
+    Theme: custom
+    Global Typography: yes
+    Browser  animations: yes
