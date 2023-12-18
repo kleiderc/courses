@@ -1,0 +1,19 @@
+{
+    "global": {
+        "heading": {
+            "application_name": "Cours"
+        }
+    },
+    "customer": {
+        "table_title": "Client" 
+    },
+    "navigation": {
+        "tool_bar":{
+            "course":"Cours",
+            "about":"À propos",
+            "register":"Enregistrer",
+            "login":"Connexion",
+            "screens": "Menu"
+        }
+    }
+}

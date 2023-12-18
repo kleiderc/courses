@@ -1,1 +1,16 @@
-<p>header works!</p>
+<header>
+    <mat-toolbar>
+        <div class="d-flex justify-content-center">
+            <span>
+                <mat-icon class="home-icon">home</mat-icon>
+
+                {{'global.heading.application_name' | translate}}
+            </span>
+        </div>
+        <div class="d-flex ms-auto">
+            <button type="button" mat-button id="language" color="accent" (click)="onChangeButtonLabel(toggle)">
+                {{toggle ? 'English' : 'French'}}
+            </button>
+        </div>
+    </mat-toolbar> 
+</header>
